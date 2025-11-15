@@ -51,7 +51,7 @@ main = do
   runSieve `deepseq` P.putStrLn "JIT compiled sieve."
 
   -- Input sizes to benchmark
-  let sizes = [50000, 75000, 100000] :: [Int]
+  let sizes = [10000, 50000, 75000] :: [Int]
 
   -- Create benchmarks for each input size
   let benches = 
