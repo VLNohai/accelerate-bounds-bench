@@ -44,7 +44,7 @@ filter' guard arr =
 main :: P.IO ()
 main = do
   -- Precompile the Accelerate function
-  let runSieve = CPU.runN sieve
+  let runSieve = runN sieve
   P.putStrLn $ test @UniformScheduleFun @NativeKernel $ sieve
 
   -- Force JIT compilation

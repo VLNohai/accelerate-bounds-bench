@@ -36,7 +36,7 @@ main = do
     inputs <- forM configs $ \(n, maxVal) -> randomArray n maxVal
 
     -- Precompile the Accelerate function
-    let runFilter = CPU.runN filterEven
+    let runFilter = runN filterEven
     runFilter `deepseq` P.putStrLn "JIT compiled filterEven"
 
     -- Create benchmarks
