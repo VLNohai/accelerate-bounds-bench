@@ -55,7 +55,7 @@ main = do
 
   -- Create benchmarks for each input size
   let benches = 
-        [ bench ("sieve " P.++ show n) $ nf runSieve (fromList Z [n :: Int])
+        [ bench ("sieve " P.++ P.show n) $ nf runSieve (fromList Z [n :: Int])
         | n <- sizes
         ]
 
