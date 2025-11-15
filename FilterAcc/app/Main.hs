@@ -40,7 +40,7 @@ main = do
     runFilter `deepseq` P.putStrLn "JIT compiled filterEven"
 
     -- Create benchmarks
-    let benches = [ bench ("filter even n=" ++ show n ++ " max=" ++ show maxVal) $ nf runFilter arr
+    let benches = [ bench ("filter even n=" ++ P.show n ++ " max=" ++ P.show maxVal) $ nf runFilter arr
                   | ((n,maxVal), arr) <- zip configs inputs
                   ]
 
