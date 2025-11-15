@@ -37,7 +37,7 @@ main = do
   -- print $ CPU.runN check (A.fromList A.Z [32768], A.fromList A.Z [64], A.fromList A.Z [2^27])
   -- print $ CPU.runN check (A.fromList A.Z [32768], A.fromList A.Z [64], A.fromList A.Z [2^28])
   -- print $ CPU.runN check (A.fromList A.Z [32768], A.fromList A.Z [64], A.fromList A.Z [2^29])
-  -- putStrLn $ A.test @CPU.UniformScheduleFun @CPU.NativeKernel $ totalProgram
+  putStrLn $ A.test @CPU.UniformScheduleFun @CPU.NativeKernel $ totalProgram
   let !cpu = CPU.runN totalProgram
   print $ A.arraySize $ cpu (A.fromList A.Z [512], A.fromList A.Z [64], A.fromList A.Z [16384])
   backend "CPU" cpu

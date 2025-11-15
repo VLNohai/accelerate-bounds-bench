@@ -18,10 +18,9 @@ import Foreign.Ptr
 
 main :: IO ()
 main = do
-  -- putStrLn $ A.test @CPU.UniformScheduleFun @CPU.NativeKernel quickhull
+  putStrLn $ A.test @CPU.UniformScheduleFun @CPU.NativeKernel quickhull
     -- List of input files
-  inputs <- mapM load ["1M_rectangle", "1M_circle", "1M_quadratic",
-                       "100M_rectangle", "100M_circle", "100M_quadratic"]
+  inputs <- mapM load ["1M_rectangle", "1M_circle", "1M_quadratic"]
 
   let quickhullCPU = CPU.runN quickhull
 

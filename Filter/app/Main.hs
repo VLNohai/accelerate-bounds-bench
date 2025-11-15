@@ -35,19 +35,23 @@ randomArray n maxVal = do
     let xs = P.take n $ randomRs (0, maxVal-1) gen
     P.return $ fromList (Z :. n) xs
 
-main :: P.IO ()
+main :: IO ()
 main = do
-    let n = 50000000  -- size of array
-        maxVal = 1000 -- maximum value of elements
-    -- P.putStrLn $ test @UniformScheduleFun @NativeKernel $ filter' (\x -> x `mod` 2 == 0)
-    -- Generate random input
-    input <- randomArray n maxVal
+    -- Benchmark configurations: (size, maxVal)
+    P.putStrLn $ test @UniformScheduleFun @NativeKernel $ filter' (\x -> x `mod` 2 == 0)
+    let configs = [(50000000, 1000), (100000000, 2000), (500000000, 5000)]
 
-    -- Precompile Accelerate function
-    let runFilter = runN (filter' (\x -> x `mod` 2 == 0))
-    runFilter `deepseq` P.putStrLn "JIT compiled boundsSafeFilter"
+    -- Generate all inputs
+    inputs <- forM configs $ \(n, maxVal) -> randomArray n maxVal
 
-    -- Benchmark
-    defaultMain
-      [ bench ("filter even random") $ nf runFilter input ]
+    -- Precompile the Accelerate function
+    let runFilter = CPU.runN filterEven
+    runFilter `deepseq` P.putStrLn "JIT compiled filterEven"
+
+    -- Create benchmarks
+    let benches = [ bench ("filter even n=" ++ show n ++ " max=" ++ show maxVal) $ nf runFilter arr
+                  | ((n,maxVal), arr) <- zip configs inputs
+                  ]
+
+    defaultMain benches
 

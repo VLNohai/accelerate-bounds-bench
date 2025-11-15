@@ -44,13 +44,19 @@ filter' guard arr =
 main :: P.IO ()
 main = do
   -- Precompile the Accelerate function
-  let runSieve = runN sieve
+  let runSieve = CPU.runN sieve
+  P.putStrLn $ test @UniformScheduleFun @NativeKernel $ sieve
 
-  -- P.putStrLn $ test @UniformScheduleFun @NativeKernel $ sieve
-
-  -- Force the function to be fully compiled before benchmarking
+  -- Force JIT compilation
   runSieve `deepseq` P.putStrLn "JIT compiled sieve."
 
-  let input = fromList Z [100000 :: Int]
+  -- Input sizes to benchmark
+  let sizes = [50000, 75000, 100000] :: [Int]
 
-  defaultMain [ bench "sieve 100000" $ nf runSieve input ]
+  -- Create benchmarks for each input size
+  let benches = 
+        [ bench ("sieve " P.++ show n) $ nf runSieve (fromList Z [n :: Int])
+        | n <- sizes
+        ]
+
+  defaultMain benches
